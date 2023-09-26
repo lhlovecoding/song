@@ -4,16 +4,53 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>song</title>
-    <link rel="stylesheet" href="index.css" />
+    <title>Document</title>
+    <!-- 引入jqcdn -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      ol {
+        width: 200px;
+        margin: 0 auto;
+      }
+      li {
+        list-style: decimal;
+        font-size: 20px;
+        height: 30px;
+        line-height: 30px;
+        border-bottom: 1px solid #ccc;
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body>
-    <!-- <video autoplay src="./bg.mp4"></video> -->
-    <audio controls autoplay src="./稻香 - 周杰伦.mp3"></audio>
-    <div class="container">
-      <ul class="lrc-list"></ul>
+    <div id="box">
+      <ol></ol>
     </div>
-    <script src="lrc.js"></script>
-    <script src="./index.js"></script>
+    <script>
+      $(function () {
+        getSongList();
+        $("ol").click(playFun);
+      });
+      function playFun() {
+        if (event.target.nodeName === "LI") {
+          let id = $(event.target).data("id");
+          window.location.href = `play.html?id=${id}`;
+        }
+      }
+      function getSongList() {
+        $.get("http://127.0.0.1:3000/song/list", function (res) {
+          var html = "";
+          res.data.forEach((item) => {
+            html += `<li data-id='${item.id}'>${item.title}-${item.singer}</li>`;
+          });
+          $("ol").html(html);
+        });
+      }
+    </script>
   </body>
 </html>
