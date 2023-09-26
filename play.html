@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="font-icon.css" />
+    <style>
+      .footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        background-color: #fff;
+        text-align: center;
+        line-height: 50px;
+        font-size: 30px;
+        color: #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <audio src=""></audio>
+    <div class="container">
+      <ul class="lrc-list"></ul>
+    </div>
+    <div class="footer">
+      <i class="iconfont icon-icon-test2" id="bofang"></i>
+    </div>
+    <script src="./index.js"></script>
+    <script>
+      const url = "http://127.0.0.1:3000/mp3/";
+      $(function () {
+        $("#bofang").click(play);
+        let id = location.search.split("=")[1];
+        $.get(
+          "http://127.0.0.1:3000/song/detail?id=" + id,
+          function (res) {
+            $("audio").attr("src", url + res.data.url);
+            data = parseLrc(res.data.lrc);
+            createLrcElement();
+          },
+          "json"
+        );
+      });
+      function play() {
+        $(this).toggleClass("icon-icon-test1 icon-icon-test2");
+        if ($(this).hasClass("icon-icon-test2")) {
+          $("audio")[0].pause();
+        } else {
+          $("audio")[0].play();
+        }
+      }
+    </script>
+  </body>
+</html>
